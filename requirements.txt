@@ -1,0 +1,8 @@
+Pillow<7.0.0
+pytorch==1.2.0
+torchvision==0.4.0
+bs4==0.0.1
+six==1.14.0
+opencc-python-reimplemented==0.1.5
+opencv==4.2.0
+worldcloud
