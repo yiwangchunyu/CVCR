@@ -116,7 +116,9 @@ def gen(type=1):
         return
 
     if arg.trans:
-        random_word=trans_by_zhtools(random_word)
+        traditional_word=trans_by_zhtools(random_word)
+    print(random_word)
+    print(traditional_word)
     # 生成一张背景图片，已经剪裁好，宽高为32*280
     raw_image = createAnImage(arg.backgroundRoot, 32, 280)
 
@@ -134,7 +136,7 @@ def gen(type=1):
         font_size = sampleFontSize()
         font = ImageFont.truetype(font_name, font_size)
         hsum=0
-        for ch in random_word:
+        for ch in traditional_word:
             w,h=font.getsize(ch)
             hsum+=h
         if hsum<280:
@@ -144,7 +146,7 @@ def gen(type=1):
     # 将文本贴到背景图片
     draw = ImageDraw.Draw(raw_image)
     pos=draw_y
-    for ch in random_word:
+    for ch in traditional_word:
         draw.text((draw_x, pos), ch, fill=font_color, font=font)
         pos+=font.getsize(ch)[1]
     # 随机选取作用函数和数量作用于图片
@@ -256,8 +258,8 @@ def main():
 
 if __name__=="__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--trans', type=bool, default=False, help='transform to traditinal chinese charactor')
-    parser.add_argument('--num_class', type=int, default=10, help='')
+    parser.add_argument('--trans', type=bool, default=True, help='transform to traditinal chinese charactor')
+    parser.add_argument('--num_class', type=int, default=100, help='')
     parser.add_argument('--num_samples', type=int, default=100, help='')
     parser.add_argument('--trainRoot', type=str, default='data/images/trainV3', help='')
     parser.add_argument('--validRoot', type=str, default='data/images/validV3', help='')

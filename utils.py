@@ -4,7 +4,7 @@ import numpy as np
 # import opencc
 import torch
 from torch.autograd import Variable
-from langconv import Converter
+import langconv
 import matplotlib.pyplot as plt
 # def trans_by_opencc(word):
 # #     #将简体转换成繁体
@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 def trans_by_zhtools(word):
     # 将简体转换成繁体
-    word = Converter('zh-hant').convert(word)
+    word = langconv.Converter('zh-hant').convert(word)
     return word
 
 
