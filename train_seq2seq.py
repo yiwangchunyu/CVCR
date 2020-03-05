@@ -18,8 +18,8 @@ from utils import Plot
 cudnn.benchmark = True
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--train_root', default='data/images/trainV2label.txt', help='path to training dataset')
-parser.add_argument('--valid_root', default='data/images/validV2label.txt', help='path to testing dataset')
+parser.add_argument('--train_root', default='data/images/train_label.txt', help='path to training dataset')
+parser.add_argument('--valid_root', default='data/images/valid_label.txt', help='path to testing dataset')
 parser.add_argument('--alphabet', default='data/images/alphabet.txt', help='')
 parser.add_argument('--num_workers', type=int, default=4, help='number of data loading num_workers')
 parser.add_argument('--batch_size', type=int, default=16, help='input batch size')

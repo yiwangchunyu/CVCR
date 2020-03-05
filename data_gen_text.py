@@ -15,8 +15,8 @@ def gen_text(text_source,keys_source,freq_source,text_dest,keys_dest,freq_dest):
         keys.add(each[0])
     for ch in tqdm(text):
         if ch in keys:
-            if ch=='的' and random()<0.5:
-                continue
+            # if ch=='的' and random()<0.5:
+            #     continue
             text_select+=ch
     freq=Counter(text_select)
     freq=freq.most_common(len(freq))
