@@ -117,8 +117,8 @@ def gen(type=1):
 
     if arg.trans:
         traditional_word=trans_by_zhtools(random_word)
-    print(random_word)
-    print(traditional_word)
+    # print(random_word)
+    # print(traditional_word)
     # 生成一张背景图片，已经剪裁好，宽高为32*280
     raw_image = createAnImage(arg.backgroundRoot, 32, 280)
 
@@ -259,7 +259,7 @@ def main():
 if __name__=="__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--trans', type=bool, default=True, help='transform to traditinal chinese charactor')
-    parser.add_argument('--num_class', type=int, default=100, help='')
+    parser.add_argument('--num_class', type=int, default=10, help='')
     parser.add_argument('--num_samples', type=int, default=100, help='')
     parser.add_argument('--trainRoot', type=str, default='data/images/trainV3', help='')
     parser.add_argument('--validRoot', type=str, default='data/images/validV3', help='')

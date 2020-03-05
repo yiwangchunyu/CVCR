@@ -1,3 +1,4 @@
 *.py[cod]
 expr
 test
+.idea

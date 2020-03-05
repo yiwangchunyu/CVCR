@@ -34,7 +34,7 @@ def gen_text(text_source,keys_source,freq_source,text_dest,keys_dest,freq_dest):
 
 if __name__=='__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--num_class',type=int, default=100)
+    parser.add_argument('--num_class',type=int, default=10)
     arg = parser.parse_args()
 
     print('gen trainning and validation data...')
