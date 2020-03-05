@@ -28,6 +28,8 @@ def gen_text():
     print('gen training text...')
     for ch in tqdm(text):
         if ch in keys:
+            if ch=='的' and random()<0.7:
+                continue
             if index.get(ch):
                 index[ch].append(id)
             else:

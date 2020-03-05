@@ -199,7 +199,7 @@ def main():
                                            transform=dataset.ResizeNormalize(img_width=arg.imgW,
                                                                              img_height=arg.imgH))
     valid_loader = torch.utils.data.DataLoader(valid_dataset,
-                                              shuffle=False,
+                                              shuffle=True,
                                               batch_size=1,
                                               num_workers=int(arg.num_workers))
 

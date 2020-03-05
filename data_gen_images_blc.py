@@ -304,10 +304,11 @@ def main():
 if __name__=="__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--trans', type=bool, default=True, help='transform to traditinal chinese charactor')
+    parser.add_argument('--blc', type=bool, default=True, help='')
     # parser.add_argument('--direction', type=str, default='vertical', help='')
     parser.add_argument('--direction', type=str, default='horizontal', help='')
     # parser.add_argument('--num_class', type=int, default=10, help='')
-    parser.add_argument('--basenum_train', type=int, default=150, help='')
+    parser.add_argument('--basenum_train', type=int, default=300, help='')
     parser.add_argument('--basenum_valid', type=int, default=20, help='')
     parser.add_argument('--num_test', type=int, default=1000, help='')
     parser.add_argument('--trainRoot', type=str, default='data/images/train', help='')
