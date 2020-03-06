@@ -218,7 +218,7 @@ class Plot():
         ax1.set_xlabel("epoch index")
         ax1.set_ylabel("loss", color='b')
         ax2.set_ylabel("accuracy/error")
-        fig.legend(loc=1)
+        fig.legend(loc='center right')
         # plt.plot(loss_x,self.loss)
         plt.savefig(self.fname,dpi=500)
         plt.show()
