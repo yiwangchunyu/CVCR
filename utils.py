@@ -184,18 +184,35 @@ class ConverterV2():
 
 class Plot():
     def __init__(self,nepoch,fname='data/loss.png'):
-        self.data=[]
+        self.loss=[]
+        self.accs=[]
+        self.accs_index = []
         self.nepoch=nepoch
         self.fname=fname
         pass
 
-    def add(self,loss):
-        self.data.append(loss)
+    def add_loss(self,loss):
+        self.loss.append(loss)
+
+    def add_acc(self,acc,epoch):
+        self.accs.append(acc)
+        self.accs_index.append(epoch)
 
     def show(self):
-        x=[ (i+1)*(self.nepoch/len(self.data)) for i in range(len(self.data))]
-        # print(x)
-        # print(self.data)
-        plt.plot(x,self.data)
+        loss_x=[ (i+1)*(self.nepoch/len(self.loss)) for i in range(len(self.loss))]
+        loss_y=self.loss
+
+        accs_x=self.accs_index
+        accs_y=self.accs
+
+        fig, ax1 = plt.subplots()
+        ax2 = ax1.twinx()
+        ax1.plot(loss_x, loss_y, 'b-')
+        ax2.plot(accs_x, accs_y, 'g-')
+        ax1.set_xlabel("epoch index")
+        ax1.set_ylabel("loss", color='b')
+        ax2.set_ylabel("accuracy", color='g')
+
+        # plt.plot(loss_x,self.loss)
         plt.savefig(self.fname,dpi=500)
         plt.show()
