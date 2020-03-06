@@ -12,6 +12,7 @@ import numpy as np
 from PIL import Image, ImageFont, ImageDraw, ImageFilter
 from tqdm import tqdm
 
+from compute_stds_means import compute_std_mean
 from utils import trans_by_zhtools
 
 
@@ -256,7 +257,7 @@ class DataSaver():
             print(self.counter_train)
             f.write(self.counter_train)
             print('num_samples:',self.train_id)
-            f.write('num_samples:', self.train_id)
+            f.write('num_samples: %d'%(self.train_id))
             print('-------------------------------------------------------')
             f.write('-------------------------------------------------------')
             print('validation data:')
@@ -266,7 +267,7 @@ class DataSaver():
             print(self.counter_valid)
             f.write(self.counter_valid)
             print('num_samples:', self.valid_id)
-            f.write('num_samples:', self.valid_id)
+            f.write('num_samples: %d'%(self.valid_id))
             print('-------------------------------------------------------')
             f.write('-------------------------------------------------------')
             print('testing data:')
@@ -276,9 +277,11 @@ class DataSaver():
             print(self.counter_test)
             f.write(self.counter_test)
             print('num_samples:', self.test_id)
-            f.write('num_samples:', self.test_id)
+            f.write('num_samples: %d'%(self.test_id))
             print('-------------------------------------------------------')
             f.write('-------------------------------------------------------')
+            #数据mean，std
+            compute_std_mean(arg.trainLabelPath, imgW=arg.imgW, imgH=arg.imgH, rgb=True)
 
 def main():
     print('deleting files...',arg.trainRoot,arg.validRoot)

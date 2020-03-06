@@ -17,7 +17,7 @@ parser.add_argument('--hidden_size', type=int, default=256, help='size of the ls
 parser.add_argument('--encoder', type=str, default='expr/encoder_best.pth', help="path to encoder (to continue training)")
 parser.add_argument('--decoder', type=str, default='expr/decoder_best.pth', help='path to decoder (to continue training)')
 parser.add_argument('--max_width', type=int, default=71, help='the width of the feature map out from cnn')
-parser.add_argument('--use_gpu', action='store_true', help='whether use gpu')
+parser.add_argument('--mean_std_file', type=str, default='data/images/desc/mean_std.json', help='whether use gpu')
 arg = parser.parse_args()
 
 
@@ -31,7 +31,7 @@ converter = utils.ConvertBetweenStringAndLabel(alphabet)
 # len(alphabet) + SOS_TOKEN + EOS_TOKEN
 num_classes = len(alphabet) + 2
 
-transformer = dataset.ResizeNormalize(img_width=arg.imgW, img_height=arg.imgH)
+transformer = dataset.ResizeNormalize(img_width=arg.imgW, img_height=arg.imgH, mean_std_file=arg.mean_std_file)
 
 
 def seq2seq_decode(encoder_out, decoder, decoder_input, decoder_hidden, max_length):

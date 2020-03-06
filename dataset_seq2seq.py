@@ -44,10 +44,17 @@ class TextLineDataset(torch.utils.data.Dataset):
 
 class ResizeNormalize(object):
 
-    def __init__(self, img_width, img_height):
+    def __init__(self, img_width, img_height, mean_std_file):
         self.img_width = img_width
         self.img_height = img_height
-        self.toTensor = torchvision.transforms.ToTensor()
+        self.mean_std=json.load(open(mean_std_file))
+        self.mean=self.mean_std['mean']
+        self.std = self.mean_std['std']
+
+        self.transforms = torchvision.transforms.Compose([
+            torchvision.transforms.ToTensor(),
+            torchvision.transforms.Normalize(mean=self.mean,std=self.std)
+        ])
 
     def __call__(self, img):
         img = np.array(img)
@@ -61,9 +68,12 @@ class ResizeNormalize(object):
             img_pad = np.zeros((self.img_height, self.img_width, c), dtype=img.dtype)
             img_pad[:height, :width, :] = img
             img = img_pad
-        img = Image.fromarray(img)
-        img = self.toTensor(img)
-        img.sub_(0.5).div_(0.5)
+        img = np.asarray(img)
+        # img = img.astype(np.float32) / 255.
+        # img = Image.fromarray(img)
+        # img = self.toTensor(img)
+        # img.sub_(0.5).div_(0.5)
+        img=self.transforms(img)
         return img
 
 
@@ -95,10 +105,10 @@ class RandomSequentialSampler(torch.utils.data.sampler.Sampler):
 
 class AlignCollate(object):
 
-    def __init__(self, img_height=32, img_width=100):
+    def __init__(self, img_height=32, img_width=100, mean_std_file='data/images/desc/mean_std.json'):
         self.img_height = img_height
         self.img_width = img_width
-        self.transform = ResizeNormalize(img_width=self.img_width, img_height=self.img_height)
+        self.transform = ResizeNormalize(img_width=self.img_width, img_height=self.img_height, mean_std_file=mean_std_file)
 
     def __call__(self, batch):
         images, labels = zip(*batch)

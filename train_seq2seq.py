@@ -37,6 +37,8 @@ parser.add_argument('--teaching_forcing_prob', type=float, default=0.5, help='wh
 parser.add_argument('--max_width', type=int, default=71, help='the width of the feature map out from cnn')
 parser.add_argument('--displayInterval', type=int, default=5, help='Interval to be displayed')
 parser.add_argument('--validInterval', type=int, default=5, help='Interval to be displayed')
+parser.add_argument('--mean_std_file', type=str, default='data/images/desc/mean_std.json', help='whether use gpu')
+
 arg = parser.parse_args()
 print(arg)
 
@@ -192,12 +194,13 @@ def main():
         drop_last=True,
         sampler=sampler,
         num_workers=int(arg.num_workers),
-        collate_fn=dataset.AlignCollate(img_height=arg.imgH, img_width=arg.imgW))
+        collate_fn=dataset.AlignCollate(img_height=arg.imgH, img_width=arg.imgW,mean_std_file=arg.mean_std_file))
 
     # create test dataset
     valid_dataset = dataset.TextLineDataset(data_path=arg.valid_root,
                                            transform=dataset.ResizeNormalize(img_width=arg.imgW,
-                                                                             img_height=arg.imgH))
+                                                                             img_height=arg.imgH,
+                                                                             mean_std_file=arg.mean_std_file))
     valid_loader = torch.utils.data.DataLoader(valid_dataset,
                                               shuffle=True,
                                               batch_size=1,
