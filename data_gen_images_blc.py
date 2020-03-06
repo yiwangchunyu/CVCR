@@ -248,22 +248,37 @@ class DataSaver():
         json.dump(self.train_labels, open(self.trainLabelPath, 'w'))
         json.dump(self.test_labels, open(self.testLabelPath, 'w'))
         #数据集字符统计
-        print('training data:')
-        print('charator counter:')
-        print(self.counter_train)
-        print('num_samples:',self.train_id)
-        print('-------------------------------------------------------')
-        print('validation data:')
-        print('charator counter:')
-        print(self.counter_valid)
-        print('num_samples:', self.valid_id)
-        print('-------------------------------------------------------')
-        print('testing data:')
-        print('charator counter:')
-        print(self.counter_test)
-        print('num_samples:', self.test_id)
-        print('-------------------------------------------------------')
-
+        with open(statistic_dest) as f:
+            print('training data:')
+            f.write('training data:')
+            print('charator counter:')
+            f.write('charator counter:')
+            print(self.counter_train)
+            f.write(self.counter_train)
+            print('num_samples:',self.train_id)
+            f.write('num_samples:', self.train_id)
+            print('-------------------------------------------------------')
+            f.write('-------------------------------------------------------')
+            print('validation data:')
+            f.write('validation data:')
+            print('charator counter:')
+            f.write('charator counter:')
+            print(self.counter_valid)
+            f.write(self.counter_valid)
+            print('num_samples:', self.valid_id)
+            f.write('num_samples:', self.valid_id)
+            print('-------------------------------------------------------')
+            f.write('-------------------------------------------------------')
+            print('testing data:')
+            f.write('testing data:')
+            print('charator counter:')
+            f.write('charator counter:')
+            print(self.counter_test)
+            f.write(self.counter_test)
+            print('num_samples:', self.test_id)
+            f.write('num_samples:', self.test_id)
+            print('-------------------------------------------------------')
+            f.write('-------------------------------------------------------')
 
 def main():
     print('deleting files...',arg.trainRoot,arg.validRoot)
@@ -326,6 +341,7 @@ if __name__=="__main__":
     text_test_source = 'data/images/desc/text_test.txt'
     freq_source = 'data/images/desc/freq.json'
     index_source = 'data/images/desc/index.json'
+    statistic_dest='data/images/desc/statistcis.txt'
 
     # freq_dest = 'data/images/freq.json'
     dataSaver = DataSaver(arg.trainRoot, arg.validRoot, arg.testRoot,arg.trainLabelPath, arg.validLabelPath,arg.testLabelPath)

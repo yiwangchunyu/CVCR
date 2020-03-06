@@ -10,12 +10,12 @@ import models.seq2seq as crnn
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--alphabet', default='data/images/alphabet.txt', help='')
-parser.add_argument('--img_path', type=str, default='', help='the path of the input image to network')
+parser.add_argument('--img_path', type=str, default='data/images/test/test_0.png', help='the path of the input image to network')
 parser.add_argument('--imgH', type=int, default=32, help='the height of the input image to network')
 parser.add_argument('--imgW', type=int, default=280, help='the width of the input image to network')
 parser.add_argument('--hidden_size', type=int, default=256, help='size of the lstm hidden state')
-parser.add_argument('--encoder', type=str, default='', help="path to encoder (to continue training)")
-parser.add_argument('--decoder', type=str, default='', help='path to decoder (to continue training)')
+parser.add_argument('--encoder', type=str, default='expr/encoder_best.pth', help="path to encoder (to continue training)")
+parser.add_argument('--decoder', type=str, default='expr/decoder_best.pth', help='path to decoder (to continue training)')
 parser.add_argument('--max_width', type=int, default=71, help='the width of the feature map out from cnn')
 parser.add_argument('--use_gpu', action='store_true', help='whether use gpu')
 arg = parser.parse_args()
@@ -58,25 +58,20 @@ def seq2seq_decode(encoder_out, decoder, decoder_input, decoder_hidden, max_leng
 def main():
     image = Image.open(arg.img_path).convert('RGB')
     image = transformer(image)
-    if torch.cuda.is_available() and arg.use_gpu:
-        image = image.cuda()
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+    image = image.to(device)
     image = image.view(1, *image.size())
     image = torch.autograd.Variable(image)
 
-    encoder = crnn.Encoder(3, arg.hidden_size)
+    encoder = crnn.Encoder(3, arg.hidden_size).to(device)
     # no dropout during inference
-    decoder = crnn.Decoder(arg.hidden_size, num_classes, dropout_p=0.0, max_length=arg.max_width)
+    decoder = crnn.Decoder(arg.hidden_size, num_classes, dropout_p=0.0, max_length=arg.max_width).to(device)
 
-    if torch.cuda.is_available() and arg.use_gpu:
-        encoder = encoder.cuda()
-        decoder = decoder.cuda()
-        map_location = 'cuda'
-    else:
-        map_location = 'cpu'
 
-    encoder.load_state_dict(torch.load(arg.encoder, map_location=map_location))
+    encoder.load_state_dict(torch.load(arg.encoder, map_location=device))
     print('loading pretrained encoder models from {}.'.format(arg.encoder))
-    decoder.load_state_dict(torch.load(arg.decoder, map_location=map_location))
+    decoder.load_state_dict(torch.load(arg.decoder, map_location=device))
     print('loading pretrained decoder models from {}.'.format(arg.decoder))
 
     encoder.eval()
@@ -85,11 +80,8 @@ def main():
     encoder_out = encoder(image)
 
     max_length = 20
-    decoder_input = torch.zeros(1).long()
-    decoder_hidden = decoder.initHidden(1)
-    if torch.cuda.is_available() and arg.use_gpu:
-        decoder_input = decoder_input.cuda()
-        decoder_hidden = decoder_hidden.cuda()
+    decoder_input = torch.zeros(1).long().to(device)
+    decoder_hidden = decoder.initHidden(1).to(device)
 
     words, prob = seq2seq_decode(encoder_out, decoder, decoder_input, decoder_hidden, max_length)
     print('predict_string: {} => predict_probility: {}'.format(words, prob))

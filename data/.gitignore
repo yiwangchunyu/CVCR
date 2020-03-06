@@ -5,3 +5,6 @@ dataV2_mean_std.json
 keys*
 text*
 freq*
+
+images
+!images/*.gitkeep
