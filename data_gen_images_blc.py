@@ -249,7 +249,7 @@ class DataSaver():
         json.dump(self.train_labels, open(self.trainLabelPath, 'w'))
         json.dump(self.test_labels, open(self.testLabelPath, 'w'))
         #数据集字符统计
-        with open(statistic_dest) as f:
+        with open(statistic_dest,'w',encoding='utf-8') as f:
             print('training data:')
             f.write('training data:')
             print('charator counter:')
