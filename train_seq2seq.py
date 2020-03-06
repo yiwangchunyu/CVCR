@@ -26,7 +26,7 @@ parser.add_argument('--batch_size', type=int, default=16, help='input batch size
 parser.add_argument('--imgH', type=int, default=32, help='the height of the input image to network')
 parser.add_argument('--imgW', type=int, default=280, help='the width of the input image to network')
 parser.add_argument('--hidden_size', type=int, default=256, help='size of the lstm hidden state')
-parser.add_argument('--nepoch', type=int, default=1, help='number of epochs to train for')
+parser.add_argument('--nepoch', type=int, default=2, help='number of epochs to train for')
 parser.add_argument('--lr', type=float, default=0.0001, help='learning rate for Critic, default=0.00005')
 parser.add_argument('--encoder', type=str, default='', help="path to encoder (to continue training)")
 parser.add_argument('--decoder', type=str, default='', help='path to decoder (to continue training)')
@@ -35,8 +35,8 @@ parser.add_argument('--random_sample', default=True, action='store_true',
                     help='whether to sample the dataset with random sampler')
 parser.add_argument('--teaching_forcing_prob', type=float, default=0.5, help='where to use teach forcing')
 parser.add_argument('--max_width', type=int, default=71, help='the width of the feature map out from cnn')
-parser.add_argument('--displayInterval', type=int, default=5, help='Interval to be displayed')
-parser.add_argument('--validInterval', type=int, default=5, help='Interval to be displayed')
+parser.add_argument('--displayInterval', type=int, default=2, help='Interval to be displayed')
+parser.add_argument('--validInterval', type=int, default=1, help='Interval to be displayed')
 parser.add_argument('--mean_std_file', type=str, default='data/images/desc/mean_std.json', help='whether use gpu')
 
 arg = parser.parse_args()
@@ -98,15 +98,16 @@ def train(image, text, encoder, decoder, criterion, train_loader, valid_loader,t
 
             loss_avg.add(loss)
 
-            if i % arg.displayInterval == 0:
+            if (i+1) % arg.displayInterval == 0:
                 print('[Epoch {0:0>4}/{1:0>4}] [Batch {2:0>4}/{3:0>4}] Loss: {4}'.format(epoch, arg.nepoch, i, len(train_loader),
                                                                          loss_avg.val()))
-                plot.add(float(loss_avg.val()))
+                plot.add_loss(float(loss_avg.val()))
                 loss_avg.reset()
 
         if (epoch+1)%arg.validInterval==0:
             accuracy = evaluate(image, text, encoder, decoder, valid_loader, max_eval_iter=100)
             # print('validation acc:',accuracy)
+            plot.add_acc(accuracy,epoch+1)
             if accuracy>best_acc:
                 best_acc=accuracy
                 print('best acc:',accuracy,', model saved')
