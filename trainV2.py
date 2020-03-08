@@ -125,9 +125,9 @@ def main(crnn, train_loader, valid_loader, criterion, optimizer):
 
 if __name__=="__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--train_root', default='data/trainV2label.txt',help='path to training dataset')
-    parser.add_argument('--valid_root', default='data/validV2label.txt', help='path to testing dataset')
-    parser.add_argument('--alphabet', default='data/alphabet.txt', help='')
+    parser.add_argument('--train_root', default='data/images/train_label.txt',help='path to training dataset')
+    parser.add_argument('--valid_root', default='data/images/valid_label.txt', help='path to testing dataset')
+    parser.add_argument('--alphabet', default='data/images/alphabet.txt', help='')
     parser.add_argument('--num_workers', type=int, default=2, help='number of data loading workers')
     parser.add_argument('--batch_size', type=int, default=8, help='input batch size')
     parser.add_argument('--imgH', type=int, default=32, help='the height of the input image to network')
@@ -203,7 +203,7 @@ if __name__=="__main__":
     # setup optimizer
     if arg.opt == 'adam':
         optimizer = optim.Adam(crnn.parameters(), lr=arg.lr,
-                               betas=(params.beta1, 0.999))
+                               betas=(0.99, 0.999))
     elif arg.opt == 'adadelta':
         optimizer = optim.Adadelta(crnn.parameters())
     else:

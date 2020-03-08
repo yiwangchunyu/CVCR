@@ -132,7 +132,7 @@ if __name__=="__main__":
     parser.add_argument('--valid_root', default='data/images/valid_label.txt', help='path to testing dataset')
     parser.add_argument('--alphabet', default='data/images/alphabet.txt', help='')
     parser.add_argument('--num_workers', type=int, default=2, help='number of data loading workers')
-    parser.add_argument('--batch_size', type=int, default=8, help='input batch size')
+    parser.add_argument('--batch_size', type=int, default=32, help='input batch size')
     parser.add_argument('--imgH', type=int, default=32, help='the height of the input image to network')
     parser.add_argument('--imgW', type=int, default=160, help='the width of the input image to network')
     parser.add_argument('--nepoch', type=int, default=25, help='number of epochs to train for')
@@ -142,6 +142,7 @@ if __name__=="__main__":
     parser.add_argument('--expr', default='expr', help='Where to store samples and models')
     parser.add_argument('--displayInterval', type=int, default=5, help='Interval to be displayed')
     parser.add_argument('--testInterval', type=int, default=400, help='Interval to be displayed')
+    parser.add_argument('--validInterval', type=int, default=400, help='Interval to be displayed')
     parser.add_argument('--saveInterval', type=int, default=200, help='Interval to save model')
     parser.add_argument('--lr', type=float, default=0.001, help='learning rate for Critic, not used by adadealta')
     parser.add_argument('--best_acc', type=float, default=0.5, help='')
@@ -181,7 +182,7 @@ if __name__=="__main__":
     )
     valid_loader = DataLoader(
         valid_dataset,
-        batch_size=1,
+        batch_size=10,
         num_workers=arg.num_workers,
         shuffle=True
     )
