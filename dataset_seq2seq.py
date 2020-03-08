@@ -44,12 +44,13 @@ class TextLineDataset(torch.utils.data.Dataset):
 
 class ResizeNormalize(object):
 
-    def __init__(self, img_width, img_height, mean_std_file):
+    def __init__(self, img_width, img_height, mean_std_file, direction='horizontal'):
         self.img_width = img_width
         self.img_height = img_height
         self.mean_std=json.load(open(mean_std_file))
         self.mean=self.mean_std['mean']
         self.std = self.mean_std['std']
+        self.direction=direction
 
         self.transforms = torchvision.transforms.Compose([
             torchvision.transforms.ToTensor(),
@@ -57,6 +58,8 @@ class ResizeNormalize(object):
         ])
 
     def __call__(self, img):
+        if self.direction=='vertical':
+            img.transpose(Image.ROTATE_90)
         img = np.array(img)
         h, w, c = img.shape
         height = self.img_height
@@ -108,7 +111,7 @@ class AlignCollate(object):
     def __init__(self, img_height=32, img_width=100, mean_std_file='data/images/desc/mean_std.json'):
         self.img_height = img_height
         self.img_width = img_width
-        self.transform = ResizeNormalize(img_width=self.img_width, img_height=self.img_height, mean_std_file=mean_std_file)
+        self.transform = ResizeNormalize(img_width=self.img_width, img_height=self.img_height, mean_std_file=mean_std_file, direction='horizontal')
 
     def __call__(self, batch):
         images, labels = zip(*batch)

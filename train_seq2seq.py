@@ -39,6 +39,9 @@ parser.add_argument('--displayInterval', type=int, default=2, help='Interval to 
 parser.add_argument('--validInterval', type=int, default=1, help='Interval to be displayed')
 parser.add_argument('--mean_std_file', type=str, default='data/images/desc/mean_std.json', help='whether use gpu')
 
+parser.add_argument('--direction', type=str, default='vertical', help='')
+# parser.add_argument('--direction', type=str, default='horizontal', help='')
+
 arg = parser.parse_args()
 print(arg)
 

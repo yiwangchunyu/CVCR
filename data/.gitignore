@@ -9,3 +9,5 @@ freq*
 images
 !images/*.gitkeep
 loss.png
+v*
+h*
