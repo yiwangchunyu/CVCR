@@ -168,8 +168,7 @@ if __name__=="__main__":
     train_dataset = dataset.Dataset(arg.train_root)
     valid_dataset = dataset.Dataset(arg.valid_root,
                                     transform=dataset.ResizeNormalize(img_width=arg.imgW,
-                                                                      img_height=arg.imgH,
-                                                                      mean_std_file=arg.mean_std_file)
+                                                                      img_height=arg.imgH)
                                     )
     train_loader = DataLoader(
         train_dataset,
