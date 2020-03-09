@@ -58,7 +58,7 @@ def gen_text():
 
 if __name__=='__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--num_class',type=int, default=10)
+    parser.add_argument('--num_class',type=int, default=100)
     arg = parser.parse_args()
 
     if not os.path.exists('data/images/desc'):

@@ -138,7 +138,7 @@ if __name__=="__main__":
     parser.add_argument('--nepoch', type=int, default=25, help='number of epochs to train for')
     parser.add_argument('--cuda', action='store_true', default=False,help='enables cuda')
     parser.add_argument('--opt', default='adam', help='select optimizer')
-    parser.add_argument('--nc', type=int, default=3, help='')
+    parser.add_argument('--nc', type=int, default=1, help='')
     parser.add_argument('--expr', default='expr', help='Where to store samples and models')
     parser.add_argument('--displayInterval', type=int, default=5, help='Interval to be displayed')
     parser.add_argument('--testInterval', type=int, default=400, help='Interval to be displayed')
@@ -150,10 +150,8 @@ if __name__=="__main__":
     parser.add_argument('--mean_std_file', type=str, default='data/images/desc/mean_std.json', help='')
     arg = parser.parse_args()
 
-    params={}
     with open(arg.alphabet,encoding='utf-8') as f:
         alphabets=f.read()
-    params['alphabets']=alphabets
     num_class = len(alphabets)+1
 
 
@@ -187,7 +185,7 @@ if __name__=="__main__":
         shuffle=True
     )
 
-    converter = utils.ConverterV2(params['alphabets'])
+    converter = utils.ConverterV2(alphabets)
     criterion = torch.nn.CTCLoss(reduction='sum')
     crnn = CRNN(arg.imgH, arg.nc, num_class, 256)
     print(crnn)
